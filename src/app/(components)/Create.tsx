@@ -36,6 +36,7 @@ export default function Create({
           onChange={(e) => {
             setMemo(e.target.value);
           }}
+          height="282px"
         />
       </div>
       <div className="flex justify-end gap-2 mt-9">

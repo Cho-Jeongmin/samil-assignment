@@ -1,5 +1,5 @@
 import { axiosInstance } from "./axiosInstance";
-import { Favorites, Favorite } from "./types";
+import { Favorites, Favorite, FavoriteDetail } from "./types";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
 const EMAIL = "jojm0829@gmail.com";
@@ -37,5 +37,16 @@ export async function createFavorite(favorite: Favorite) {
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to post favorite company.");
+  }
+}
+
+// 관심기업 상세 조회
+export async function getFavoriteDetail(id: number): Promise<FavoriteDetail> {
+  try {
+    const res = await axiosInstance.get(`/favorites/${id}?email=${EMAIL}`);
+    return res.data;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch favorites data.");
   }
 }

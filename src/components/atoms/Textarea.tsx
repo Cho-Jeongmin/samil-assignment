@@ -1,11 +1,18 @@
 "use client";
 
+import clsx from "clsx";
+
 export default function Textarea({
+  height,
   ...props
-}: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
+}: React.TextareaHTMLAttributes<HTMLTextAreaElement> & { height: string }) {
   return (
     <textarea
-      className="outline-0 border border-border rounded-md resize-none p-4 text-text h-70"
+      style={{ height }}
+      className={clsx(
+        "outline-0 border border-border rounded-md resize-none p-4 text-text w-full",
+        height === "full" && "h-full!"
+      )}
       {...props}
     />
   );

@@ -8,8 +8,16 @@ import { Item } from "@/api/types";
 import clsx from "clsx";
 import Checkbox from "@/components/atoms/Checkbox";
 import { Trash } from "lucide-react";
+import SlidePanel from "@/components/atoms/SlidePanel";
+import Detail from "./Detail";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function TableContent() {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+
   const { data: favorites, isLoading } = useQuery({
     queryKey: ["favorites"],
     queryFn: getFavorites,
@@ -18,6 +26,10 @@ export default function TableContent() {
 
   const [checkedAll, setCheckedAll] = useState(false);
   const [checkedList, setCheckedList] = useState<number[]>([]);
+
+  const [slidePanelOpen, setSlidePanelOpen] = useState(
+    searchParams.get("company-id") ? true : false
+  );
 
   const onCheck = (id: number) => {
     setCheckedList((prev) =>
@@ -37,57 +49,78 @@ export default function TableContent() {
     }
   };
 
+  const onOpenCloseItem = (id: number | undefined) => {
+    const params = new URLSearchParams(searchParams);
+    if (id) {
+      params.set("company-id", id.toString());
+    } else {
+      params.delete("company-id");
+    }
+    replace(`${pathname}?${params.toString()}`);
+    setSlidePanelOpen((prev) => !prev);
+  };
+
   return (
-    <table className="w-full rounded-lg outline outline-gray-300 overflow-hidden">
-      <colgroup>
-        <col className="w-14" />
-        <col className="w-auto" />
-        <col className="w-60" />
-        <col className="w-10" />
-      </colgroup>
-      <thead>
-        <tr className="h-12 bg-gray-100">
-          <th>
-            <Checkbox
-              onClick={onCheckAll}
-              checked={checkedAll}
-              className="ml-5"
-            />
-          </th>
-          <th className="text-left">회사명</th>
-          <th className="text-left">생성일자</th>
-          <th className="text-left"></th>
-        </tr>
-      </thead>
-      <tbody>
-        {items?.map((item: Item) => (
-          <tr
-            onClick={() => {}}
-            className={clsx(
-              "border-t border-t-gray-300 h-12",
-              checkedList.includes(item.id)
-                ? "bg-primary-100 hover:bg-primary-200"
-                : "hover:bg-gray-50"
-            )}
-            key={item.id}
-          >
-            <td className="cursor-default">
+    <div>
+      <table className="w-full rounded-lg outline outline-gray-300 overflow-hidden">
+        <colgroup>
+          <col className="w-14" />
+          <col className="w-auto" />
+          <col className="w-60" />
+          <col className="w-10" />
+        </colgroup>
+        <thead>
+          <tr className="h-12 bg-gray-100">
+            <th>
               <Checkbox
-                checked={checkedList.includes(item.id)}
-                onChange={() => {
-                  onCheck(item.id);
-                }}
+                onClick={onCheckAll}
+                checked={checkedAll}
                 className="ml-5"
               />
-            </td>
-            <td className="cursor-pointer">{item.company_name}</td>
-            <td className="cursor-pointer">{item.created_at}</td>
-            <td className="">
-              <Trash size={20} className="text-border cursor-pointer" />
-            </td>
+            </th>
+            <th className="text-left">회사명</th>
+            <th className="text-left">생성일자</th>
+            <th className="text-left"></th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {items?.map((item: Item) => (
+            <tr
+              onClick={() => {
+                onOpenCloseItem(item.id);
+              }}
+              className={clsx(
+                "border-t border-t-gray-300 h-12",
+                checkedList.includes(item.id)
+                  ? "bg-primary-100 hover:bg-primary-200"
+                  : "hover:bg-gray-50"
+              )}
+              key={item.id}
+            >
+              <td className="cursor-default">
+                <Checkbox
+                  checked={checkedList.includes(item.id)}
+                  onChange={() => {
+                    onCheck(item.id);
+                  }}
+                  className="ml-5"
+                />
+              </td>
+              <td className="cursor-pointer">{item.company_name}</td>
+              <td className="cursor-pointer">{item.created_at}</td>
+              <td className="">
+                <Trash size={20} className="text-border cursor-pointer" />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <SlidePanel
+        open={slidePanelOpen}
+        onClose={() => onOpenCloseItem(undefined)}
+      >
+        <Detail />
+      </SlidePanel>
+    </div>
   );
 }

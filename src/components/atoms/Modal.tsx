@@ -26,7 +26,7 @@ export default function Modal({
   return (
     <div>
       <Dialog open={isOpen} onClose={onClose} className="relative z-50">
-        <DialogBackdrop className="fixed inset-0 bg-black/30 backdrop-blur-sm" />
+        <DialogBackdrop className="fixed inset-0 bg-black/30 backdrop-blur-xs" />
 
         <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
           <DialogPanel className={`rounded-md w-160 bg-white`}>
