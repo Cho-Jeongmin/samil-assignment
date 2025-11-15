@@ -1,3 +1,5 @@
+"use client";
+
 export default function Textarea({
   ...props
 }: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
