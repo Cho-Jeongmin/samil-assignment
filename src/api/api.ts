@@ -50,3 +50,16 @@ export async function getFavoriteDetail(id: number): Promise<FavoriteDetail> {
     throw new Error("Failed to fetch favorites data.");
   }
 }
+
+// 관심기업 메모 수정
+export async function updateFavoriteMemo(id: number, memo: string) {
+  try {
+    const res = await axiosInstance.put(`/favorites/${id}?email=${EMAIL}`, {
+      memo: memo,
+    });
+    return res.data;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to post favorite company.");
+  }
+}
