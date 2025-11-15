@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Modal from "@/components/atoms/Modal";
-// import Create from "./Create";
+import Create from "./Create";
 import Button from "@/components/atoms/Button";
 import { Plus, Trash } from "lucide-react";
 
@@ -46,12 +46,12 @@ export default function TableHeader({
         }}
         title="관심기업 생성"
       >
-        {/* <Create
+        <Create
           companies={companies}
           onSuccess={() => {
             setIsOpen(false);
           }}
-        /> */}
+        />
       </Modal>
     </header>
   );
