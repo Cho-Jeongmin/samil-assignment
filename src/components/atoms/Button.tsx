@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import clsx from "clsx";
 
 interface ButtonProps {
@@ -37,7 +37,7 @@ export default function Button({
         className
       )}
     >
-      {icon && <span className="flex-shrink-0">{icon}</span>}
+      {icon && <span className="shrink-0">{icon}</span>}
       {children}
     </button>
   );
