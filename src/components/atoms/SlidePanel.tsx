@@ -1,6 +1,7 @@
 "use client";
 
 import { Transition, TransitionChild } from "@headlessui/react";
+import { useEffect } from "react";
 
 export default function SlidePanel({
   open,
@@ -11,6 +12,19 @@ export default function SlidePanel({
   onClose: () => void;
   children?: React.ReactNode;
 }) {
+  // 배경 스크롤 방지(스크롤 유지 필요)
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [open]);
+
   return (
     <Transition show={open}>
       {/* Backdrop */}
