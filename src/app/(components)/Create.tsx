@@ -3,8 +3,9 @@
 import Button from "@/components/atoms/Button";
 import SearchableSelect from "@/components/atoms/SearchableSelect";
 import Textarea from "@/components/atoms/Textarea";
-import { postFavorite } from "@/lib/api";
+import { createFavorite } from "@/api/api";
 import { useState } from "react";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 
 export default function Create({
   companies,
@@ -16,10 +17,14 @@ export default function Create({
   const [name, setName] = useState("");
   const [memo, setMemo] = useState("");
 
-  const onSubmit = () => {
-    postFavorite({ company_name: name, memo: memo });
-    onSuccess();
-  };
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: () => createFavorite({ company_name: name, memo: memo }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["favorites"] });
+      onSuccess();
+    },
+  });
 
   return (
     <div>
@@ -34,7 +39,7 @@ export default function Create({
         />
       </div>
       <div className="flex justify-end gap-2 mt-9">
-        <Button variant="fill" onClick={onSubmit}>
+        <Button variant="fill" onClick={() => mutation.mutate()}>
           저장
         </Button>
       </div>

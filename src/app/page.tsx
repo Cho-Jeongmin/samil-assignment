@@ -1,10 +1,9 @@
-import { fetchFavorites, getCompanies } from "@/lib/api";
+import { fetchCompaniesServer } from "@/api/api";
 import Banner from "@/components/molecules/Banner";
 import Table from "./(components)/Table";
 
 export default async function Home() {
-  const { items } = await fetchFavorites();
-  const { companies } = await getCompanies();
+  const { companies } = await fetchCompaniesServer();
 
   return (
     <div>
@@ -12,7 +11,7 @@ export default async function Home() {
         title="관심기업 관리 서비스"
         subtitle="PwC 삼일 Acceleration Center"
       />
-      <Table items={items} companies={companies} />
+      <Table companies={companies} />
     </div>
   );
 }

@@ -1,12 +1,21 @@
 "use client";
 
-import Checkbox from "@/components/atoms/Checkbox";
-import { Item } from "@/lib/api";
-import clsx from "clsx";
-import { Trash } from "lucide-react";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getFavorites } from "@/api/api";
+import { Item } from "@/api/types";
 
-export default function TableContent({ items }: { items: Item[] }) {
+import clsx from "clsx";
+import Checkbox from "@/components/atoms/Checkbox";
+import { Trash } from "lucide-react";
+
+export default function TableContent() {
+  const { data: favorites, isLoading } = useQuery({
+    queryKey: ["favorites"],
+    queryFn: getFavorites,
+  });
+  const items = favorites?.items;
+
   const [checkedAll, setCheckedAll] = useState(false);
   const [checkedList, setCheckedList] = useState<number[]>([]);
 
@@ -17,12 +26,14 @@ export default function TableContent({ items }: { items: Item[] }) {
   };
 
   const onCheckAll = () => {
-    if (checkedList.length === items.length) {
-      setCheckedList([]);
-      setCheckedAll(false);
-    } else {
-      setCheckedList(items.map((item) => item.id));
-      setCheckedAll(true);
+    if (items) {
+      if (checkedList.length === items.length) {
+        setCheckedList([]);
+        setCheckedAll(false);
+      } else {
+        setCheckedList(items.map((item) => item.id));
+        setCheckedAll(true);
+      }
     }
   };
 
@@ -49,7 +60,7 @@ export default function TableContent({ items }: { items: Item[] }) {
         </tr>
       </thead>
       <tbody>
-        {items.map((item: Item) => (
+        {items?.map((item: Item) => (
           <tr
             onClick={() => {}}
             className={clsx(
