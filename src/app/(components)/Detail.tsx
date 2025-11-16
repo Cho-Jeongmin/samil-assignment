@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Pencil } from "lucide-react";
 import Button from "@/components/atoms/Button";
@@ -15,18 +14,31 @@ import useMemoEdit from "@/hooks/useMemoEdit";
 export default function Detail() {
   const searchParams = useSearchParams();
   const id = Number(searchParams.get("company-id")) || -1;
-  const { data: favoriteDetail } = useFavoriteDetailQuery(id);
+  const {
+    data: favoriteDetail,
+    isLoading,
+    isError,
+  } = useFavoriteDetailQuery(id);
 
   const mutation = useUpdateFavoriteMemoMutation();
 
   const { memo, setMemo, isEdit, setIsEdit, onCancel, onSave } = useMemoEdit(
     favoriteDetail,
-    (memo: string) => {
-      mutation.mutate({ id: id, memo: memo });
+    (memo: string, onSuccess: () => void) => {
+      mutation.mutate({ id: id, memo: memo, onSuccess: onSuccess });
     }
   );
 
   const { textareaRef } = useTextareaFocus(isEdit);
+
+  if (isLoading || isError)
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        {isLoading
+          ? "로딩 중..."
+          : isError && "관심기업 상세 조회에 실패했습니다."}
+      </div>
+    );
 
   return (
     <div className="flex flex-col h-full">

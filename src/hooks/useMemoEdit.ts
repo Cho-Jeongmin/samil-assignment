@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 // 관심기업 메모 수정 hook
 export default function useMemoEdit(
   favoriteDetail: FavoriteDetail | undefined,
-  mutateMemo: (memo: string) => void
+  mutateMemo: (memo: string, onSuccess: () => void) => void
 ) {
   const [memo, setMemo] = useState("");
   const [isEdit, setIsEdit] = useState(false);
@@ -25,9 +25,9 @@ export default function useMemoEdit(
   };
 
   const onSave = () => {
-    mutateMemo(memo);
-    toast.success("메모가 저장되었습니다.");
-    setIsEdit(false);
+    mutateMemo(memo, () => {
+      setIsEdit(false);
+    });
   };
 
   return { memo, setMemo, isEdit, setIsEdit, onCancel, onSave };

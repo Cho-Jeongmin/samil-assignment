@@ -21,8 +21,10 @@ export default function TableContent({
   const { slidePanelOpen, onOpenCloseItem } = useSlidePanel();
   const { page, onChangePage } = usePagination();
 
-  const { data: favorites } = useFavoritesQuery(page);
+  const { data: favorites, isLoading, isError } = useFavoritesQuery(page);
   const items = favorites?.items;
+
+  console.log(isError);
 
   const {
     checkedList,
@@ -57,10 +59,14 @@ export default function TableContent({
             </tr>
           </thead>
           <tbody>
-            {items?.length === 0 ? (
+            {isLoading || isError || items?.length === 0 ? (
               <tr className="h-40">
                 <td colSpan={4} className="text-center">
-                  관심기업이 없습니다.
+                  {isLoading
+                    ? "관심기업 로딩 중..."
+                    : isError
+                    ? "관심기업 로딩에 실패했습니다."
+                    : "관심기업이 없습니다."}
                 </td>
               </tr>
             ) : (

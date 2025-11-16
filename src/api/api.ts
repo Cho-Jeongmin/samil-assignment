@@ -1,4 +1,3 @@
-import axios from "axios";
 import { axiosInstance } from "./axiosInstance";
 import { Favorites, Favorite, FavoriteDetail } from "./types";
 
@@ -11,26 +10,21 @@ export async function fetchCompaniesServer(): Promise<{ companies: string[] }> {
     const res = await fetch(`${API_BASE}/companies`);
     return res.json();
   } catch (error) {
-    console.error("Database Error:", error);
-    throw new Error("Failed to fetch companies data.");
+    console.error("회사명 리스트 조회 에러", error);
+    throw new Error("회사명 리스트 조회 에러");
   }
 }
 
 // 관심기업 목록 조회
 export async function getFavorites(page: number): Promise<Favorites> {
-  try {
-    const res = await axiosInstance.get(
-      `/favorites?email=${EMAIL}&page=${page}`
-    );
-    return res.data;
-  } catch (error) {
-    console.error("Database Error:", error);
-    throw new Error("Failed to fetch favorites data.");
-  }
+  // throw Error("조회 에러");
+  const res = await axiosInstance.get(`/favorites?email=${EMAIL}&page=${page}`);
+  return res.data;
 }
 
 // 관심기업 등록
 export async function createFavorite(favorite: Favorite) {
+  // throw Error("등록 에러");
   const res = await axiosInstance.post(`/favorites`, {
     email: EMAIL,
     ...favorite,
@@ -40,35 +34,23 @@ export async function createFavorite(favorite: Favorite) {
 
 // 관심기업 상세 조회
 export async function getFavoriteDetail(id: number): Promise<FavoriteDetail> {
-  try {
-    const res = await axiosInstance.get(`/favorites/${id}?email=${EMAIL}`);
-    return res.data;
-  } catch (error) {
-    console.error("Database Error:", error);
-    throw new Error("Failed to fetch favorite detail data.");
-  }
+  // throw Error("상세 조회 에러");
+  const res = await axiosInstance.get(`/favorites/${id}?email=${EMAIL}`);
+  return res.data;
 }
 
 // 관심기업 메모 수정
 export async function updateFavoriteMemo(id: number, memo: string) {
-  try {
-    const res = await axiosInstance.put(`/favorites/${id}?email=${EMAIL}`, {
-      memo: memo,
-    });
-    return res.data;
-  } catch (error) {
-    console.error("Database Error:", error);
-    throw new Error("Failed to post favorite company.");
-  }
+  // throw Error("메모 수정 에러");
+  const res = await axiosInstance.put(`/favorites/${id}?email=${EMAIL}`, {
+    memo: memo,
+  });
+  return res.data;
 }
 
 // 관심기업 삭제
 export async function deleteFavorite(id: number) {
-  try {
-    const res = await axiosInstance.delete(`/favorites/${id}?email=${EMAIL}`);
-    return res.data;
-  } catch (error) {
-    console.error("Database Error:", error);
-    throw new Error("Failed to delete favorite company.");
-  }
+  // throw Error("삭제 에러");
+  const res = await axiosInstance.delete(`/favorites/${id}?email=${EMAIL}`);
+  return res.data;
 }

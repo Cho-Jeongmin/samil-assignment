@@ -2,7 +2,6 @@ import { useCheckedList } from "@/store/useCheckedList";
 import { CircleX } from "lucide-react";
 import Button from "@/components/atoms/Button";
 import { useDeleteFavoriteMutation } from "@/api/query";
-import { toast } from "react-hot-toast";
 
 export default function Delete({ onClose }: { onClose: () => void }) {
   const checkedList = useCheckedList((state) => state.checkedList);
@@ -16,13 +15,13 @@ export default function Delete({ onClose }: { onClose: () => void }) {
     if (singleDeleteId >= 0) {
       // 단일 삭제
       mutation.mutate([singleDeleteId]);
+      // Todo: 만약 singleDeleteId가 checkedList에 담겨있다면 삭제
       setSingleDeleteId(-1);
     } else {
       // 일괄 삭제
       mutation.mutate(checkedList);
       resetCheckedList();
     }
-    toast.success("삭제되었습니다.");
     onClose();
   };
 
