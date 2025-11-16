@@ -19,9 +19,10 @@ npm install
 ```
 
 4. .env 파일에 백엔드 주소 작성하기
+<br>
 NEXT_PUBLIC_API_BASE_URL=백엔드api주소
 
-5. 개발 서버 실행하기
+6. 개발 서버 실행하기
 ```bash
 npm run dev
 ```
