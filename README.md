@@ -1,5 +1,7 @@
 # 삼일PwC엑셀러레이션센터 2026년 하반기 프론트엔드 개발자 채용 과제
 
+선택 과제는 수행하지 않았습니다.
+
 ## 🍋 실행하기
 1. 프로젝트 클론하기
 ```
@@ -16,9 +18,12 @@ cd samil-assignment
 npm install
 ```
 
-4. 개발 서버 실행하기
+4. .env 파일에 백엔드 주소 작성하기
+NEXT_PUBLIC_API_BASE_URL=백엔드api주소
+
+5. 개발 서버 실행하기
 ```bash
 npm run dev
 ```
 
-5. 브라우저에서 [http://localhost:3000](http://localhost:3000) 접속하기
+6. 브라우저에서 [http://localhost:3000](http://localhost:3000) 접속하기
