@@ -1,31 +1,22 @@
 "use client";
 
-import { getFavoriteDetail, updateFavoriteMemo } from "@/api/api";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Pencil } from "lucide-react";
 import Button from "@/components/atoms/Button";
 import Textarea from "@/components/atoms/Textarea";
+import {
+  useFavoriteDetailQuery,
+  useUpdateFavoriteMemoMutation,
+} from "@/api/query";
 
 export default function Detail() {
   const searchParams = useSearchParams();
   const id = Number(searchParams.get("company-id")) || -1;
 
-  const queryClient = useQueryClient();
+  const { data: favoriteDetail } = useFavoriteDetailQuery(id);
 
-  const { data: favoriteDetail } = useQuery({
-    queryKey: ["favorite-detail", id],
-    queryFn: () => getFavoriteDetail(id),
-    enabled: id >= 0,
-  });
-
-  const mutation = useMutation({
-    mutationFn: () => updateFavoriteMemo(id, memo),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["favorite-detail", id] });
-    },
-  });
+  const mutation = useUpdateFavoriteMemoMutation();
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [memo, setMemo] = useState("");
@@ -57,7 +48,7 @@ export default function Detail() {
   };
 
   const onSave = () => {
-    mutation.mutate();
+    mutation.mutate({ id: id, memo: memo });
     setIsEdit(false);
   };
 

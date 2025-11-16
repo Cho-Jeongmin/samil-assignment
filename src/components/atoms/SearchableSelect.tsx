@@ -32,7 +32,7 @@ const SearchableSelect: React.FC<SearchableSelectProps> = ({
   // input에 자동 포커스
   useEffect(() => {
     if (!disabled) inputRef.current?.focus();
-  }, []);
+  }, [disabled]);
 
   // 검색 키워드로 필터링
   const filteredOptions = isSelected

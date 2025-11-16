@@ -1,8 +1,7 @@
-import { deleteFavorite } from "@/api/api";
-import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { useCheckedList } from "@/store/useCheckedList";
 import { CircleX } from "lucide-react";
 import Button from "@/components/atoms/Button";
+import { useDeleteFavoriteMutation } from "@/api/query";
 
 export default function Delete({ onClose }: { onClose: () => void }) {
   const checkedList = useCheckedList((state) => state.checkedList);
@@ -10,16 +9,7 @@ export default function Delete({ onClose }: { onClose: () => void }) {
   const resetCheckedList = useCheckedList((state) => state.resetCheckedList);
   const setSingleDeleteId = useCheckedList((state) => state.setSingleDeleteId);
 
-  const queryClient = useQueryClient();
-
-  const mutation = useMutation({
-    mutationFn: async (ids: number[]) => {
-      await Promise.all(ids.map((id) => deleteFavorite(id)));
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["favorites"] });
-    },
-  });
+  const mutation = useDeleteFavoriteMutation();
 
   const onDelete = () => {
     if (singleDeleteId >= 0) {

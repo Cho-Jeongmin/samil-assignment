@@ -3,8 +3,6 @@
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { getFavorites } from "@/api/api";
 import { useCheckedList } from "@/store/useCheckedList";
 import { Item } from "@/api/types";
 
@@ -13,6 +11,7 @@ import Checkbox from "@/components/atoms/Checkbox";
 import { Trash } from "lucide-react";
 import SlidePanel from "@/components/atoms/SlidePanel";
 import Detail from "./Detail";
+import { useFavoritesQuery } from "@/api/query";
 
 export default function TableContent({
   onOpenDelete,
@@ -23,10 +22,7 @@ export default function TableContent({
   const pathname = usePathname();
   const { replace } = useRouter();
 
-  const { data: favorites } = useQuery({
-    queryKey: ["favorites"],
-    queryFn: getFavorites,
-  });
+  const { data: favorites } = useFavoritesQuery();
   const items = favorites?.items;
 
   const {
