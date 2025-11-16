@@ -4,6 +4,10 @@
   @apply text-sm font-semibold text-gray-500;
 }
 
+.pagination-arrow {
+  @apply flex items-center px-3 py-1 rounded-md text-text cursor-pointer disabled:cursor-default disabled:opacity-30;
+}
+
 @theme {
   --color-border: #c6c6c8;
   --color-text: #3e3e3e;

@@ -16,9 +16,11 @@ export async function fetchCompaniesServer(): Promise<{ companies: string[] }> {
 }
 
 // 관심기업 목록 조회
-export async function getFavorites(): Promise<Favorites> {
+export async function getFavorites(page: number): Promise<Favorites> {
   try {
-    const res = await axiosInstance.get(`/favorites?email=${EMAIL}`);
+    const res = await axiosInstance.get(
+      `/favorites?email=${EMAIL}&page=${page}`
+    );
     return res.data;
   } catch (error) {
     console.error("Database Error:", error);

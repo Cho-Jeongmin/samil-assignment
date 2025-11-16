@@ -8,10 +8,10 @@ import {
 } from "./api";
 
 // 관심기업 목록 조회 쿼리
-export const useFavoritesQuery = () =>
+export const useFavoritesQuery = (page: number) =>
   useQuery({
-    queryKey: ["favorites"],
-    queryFn: getFavorites,
+    queryKey: ["favorites", page],
+    queryFn: () => getFavorites(page),
   });
 
 // 관심기업 상세 조회 쿼리

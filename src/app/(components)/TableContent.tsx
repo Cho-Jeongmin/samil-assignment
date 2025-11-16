@@ -12,6 +12,7 @@ import { Trash } from "lucide-react";
 import SlidePanel from "@/components/atoms/SlidePanel";
 import Detail from "./Detail";
 import { useFavoritesQuery } from "@/api/query";
+import { Pagination } from "@/components/molecules/Pagination";
 
 export default function TableContent({
   onOpenDelete,
@@ -22,7 +23,9 @@ export default function TableContent({
   const pathname = usePathname();
   const { replace } = useRouter();
 
-  const { data: favorites } = useFavoritesQuery();
+  const [page, setPage] = useState(1);
+
+  const { data: favorites } = useFavoritesQuery(page);
   const items = favorites?.items;
 
   const {
@@ -129,6 +132,11 @@ export default function TableContent({
           )}
         </tbody>
       </table>
+      <Pagination
+        page={page}
+        totalPages={favorites?.total_pages || 1}
+        onChange={setPage}
+      />
       <SlidePanel
         open={slidePanelOpen}
         onClose={() => onOpenCloseItem(undefined)}
