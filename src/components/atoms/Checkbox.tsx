@@ -5,44 +5,34 @@ import clsx from "clsx";
 import Image from "next/image";
 
 type Props = {
-  isMaster?: boolean;
   checked: boolean;
-  onChange?: (checked: boolean) => void;
-  onClick?: () => void;
+  onClick: () => void;
+  disabled?: boolean;
   className?: string;
 };
 
 export default function Checkbox({
   checked,
-  onChange,
   onClick,
+  disabled,
   className,
 }: Props) {
   return (
-    <label
-      onClick={onClick}
+    <Image
+      src={checked ? "/check-true.svg" : "/check-false.svg"}
+      onClick={() => {
+        if (!disabled) {
+          onClick();
+        }
+      }}
+      width={20}
+      height={20}
+      alt="checkbox"
       className={clsx(
-        "flex items-center gap-2 cursor-pointer select-none",
+        "flex items-center cursor-pointer select-none",
+        disabled && "cursor-default!",
         className
       )}
-    >
-      {checked ? (
-        <Image
-          src="/check-true.svg"
-          onClick={() => onChange?.(false)}
-          width={20}
-          height={20}
-          alt="check-true"
-        />
-      ) : (
-        <Image
-          src="/check-false.svg"
-          onClick={() => onChange?.(true)}
-          width={20}
-          height={20}
-          alt="check-false"
-        />
-      )}
-    </label>
+    />
   );
 }

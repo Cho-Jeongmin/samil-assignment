@@ -65,8 +65,8 @@ export default function TableContent({
           <tr className="h-12 bg-gray-100">
             <th>
               <Checkbox
-                onClick={() => onClickMaster(items?.map((item) => item.id))}
                 checked={isMasterChecked}
+                onClick={() => onClickMaster(items?.map((item) => item.id))}
                 className="ml-5"
               />
             </th>
@@ -89,7 +89,7 @@ export default function TableContent({
               <td className="cursor-default">
                 <Checkbox
                   checked={checkedList.includes(item.id)}
-                  onChange={() => {
+                  onClick={() => {
                     toggleCheck(item.id, items.length);
                   }}
                   className="ml-5"
