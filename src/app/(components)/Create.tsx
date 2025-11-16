@@ -45,9 +45,12 @@ export default function Create({
       <div className="flex justify-end gap-2 mt-9">
         <Button
           variant="fill"
+          disabled={name === ""}
           onClick={() => {
-            mutation.mutate({ name: name, memo: memo });
-            onClose();
+            if (name !== "") {
+              mutation.mutate({ name: name, memo: memo });
+              onClose();
+            }
           }}
         >
           저장
