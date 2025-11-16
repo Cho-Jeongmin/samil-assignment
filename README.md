@@ -18,9 +18,10 @@ cd samil-assignment
 npm install
 ```
 
-4. .env 파일에 백엔드 주소 작성하기
-<br>
+4. .env 파일에 백엔드 base 주소 작성하기
+```
 NEXT_PUBLIC_API_BASE_URL=백엔드api주소
+```
 
 6. 개발 서버 실행하기
 ```bash
