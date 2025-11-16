@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/molecules/Header";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Provider from "@/api/provider";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,13 +31,12 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Provider>
-          <div>
-            <div className="fixed z-10 w-full">
-              <Header />
-            </div>
-            <div className="pt-15">{children}</div>
+          <div className="fixed z-10 w-full">
+            <Header />
           </div>
+          <div className="pt-15">{children}</div>
         </Provider>
+        <Toaster position="top-right" />
       </body>
     </html>
   );
