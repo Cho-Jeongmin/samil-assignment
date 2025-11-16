@@ -25,6 +25,11 @@ export default function TableContent({
 
   const [page, setPage] = useState(1);
 
+  const onChangePage = (newPage: number) => {
+    setPage(newPage);
+    resetCheckedList();
+  };
+
   const { data: favorites } = useFavoritesQuery(page);
   const items = favorites?.items;
 
@@ -33,6 +38,7 @@ export default function TableContent({
     isMasterChecked,
     toggleCheck,
     onClickMaster,
+    resetCheckedList,
     setSingleDeleteId,
   } = useCheckedList();
 
@@ -135,7 +141,7 @@ export default function TableContent({
       <Pagination
         page={page}
         totalPages={favorites?.total_pages || 1}
-        onChange={setPage}
+        onChange={onChangePage}
       />
       <SlidePanel
         open={slidePanelOpen}
