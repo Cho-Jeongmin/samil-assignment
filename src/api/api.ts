@@ -19,7 +19,9 @@ export async function fetchCompaniesServer(): Promise<{ companies: string[] }> {
 export async function getFavorites(page: number): Promise<Favorites> {
   try {
     const res = await axiosInstance.get(
-      `/favorites?email=${EMAIL}&page=${page}`
+      page >= 0
+        ? `/favorites?email=${EMAIL}&page=${page}`
+        : `/favorites?email=${EMAIL}`
     );
     return res.data;
   } catch (error) {
