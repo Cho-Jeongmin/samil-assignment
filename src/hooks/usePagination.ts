@@ -1,6 +1,7 @@
 import { useCheckedList } from "@/store/useCheckedList";
 import { useState } from "react";
 
+// 페이지네이션 hook
 export default function usePagination() {
   const [page, setPage] = useState(1);
 

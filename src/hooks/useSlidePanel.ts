@@ -3,6 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
+// 관심기업 상세 슬라이드 패널 hook
 export default function useSlidePanel() {
   const searchParams = useSearchParams();
   const pathname = usePathname();

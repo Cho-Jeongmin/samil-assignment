@@ -1,6 +1,7 @@
 import { FavoriteDetail } from "@/api/types";
 import { useEffect, useState } from "react";
 
+// 관심기업 메모 수정 hook
 export default function useMemoEdit(
   favoriteDetail: FavoriteDetail | undefined,
   mutateMemo: (memo: string) => void
