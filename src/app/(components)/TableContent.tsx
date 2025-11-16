@@ -76,53 +76,61 @@ export default function TableContent({
           </tr>
         </thead>
         <tbody>
-          {items?.map((item: Item) => (
-            <tr
-              className={clsx(
-                "border-t border-t-gray-300 h-12",
-                checkedList.includes(item.id)
-                  ? "bg-primary-100 hover:bg-primary-200"
-                  : "hover:bg-gray-50"
-              )}
-              key={item.id}
-            >
-              <td className="cursor-default">
-                <Checkbox
-                  checked={checkedList.includes(item.id)}
-                  onClick={() => {
-                    toggleCheck(item.id, items.length);
-                  }}
-                  className="ml-5"
-                />
-              </td>
-              <td
-                onClick={() => {
-                  onOpenCloseItem(item.id);
-                }}
-                className="cursor-pointer"
-              >
-                {item.company_name}
-              </td>
-              <td
-                onClick={() => {
-                  onOpenCloseItem(item.id);
-                }}
-                className="cursor-pointer"
-              >
-                {item.created_at}
-              </td>
-              <td className="">
-                <Trash
-                  onClick={() => {
-                    setSingleDeleteId(item.id);
-                    onOpenDelete();
-                  }}
-                  size={20}
-                  className="text-border cursor-pointer"
-                />
+          {items?.length === 0 ? (
+            <tr className="h-40">
+              <td colSpan={4} className="text-center">
+                관심기업이 없습니다.
               </td>
             </tr>
-          ))}
+          ) : (
+            items?.map((item: Item) => (
+              <tr
+                className={clsx(
+                  "border-t border-t-gray-300 h-12",
+                  checkedList.includes(item.id)
+                    ? "bg-primary-100 hover:bg-primary-200"
+                    : "hover:bg-gray-50"
+                )}
+                key={item.id}
+              >
+                <td className="cursor-default">
+                  <Checkbox
+                    checked={checkedList.includes(item.id)}
+                    onClick={() => {
+                      toggleCheck(item.id, items.length);
+                    }}
+                    className="ml-5"
+                  />
+                </td>
+                <td
+                  onClick={() => {
+                    onOpenCloseItem(item.id);
+                  }}
+                  className="cursor-pointer"
+                >
+                  {item.company_name}
+                </td>
+                <td
+                  onClick={() => {
+                    onOpenCloseItem(item.id);
+                  }}
+                  className="cursor-pointer"
+                >
+                  {item.created_at}
+                </td>
+                <td className="">
+                  <Trash
+                    onClick={() => {
+                      setSingleDeleteId(item.id);
+                      onOpenDelete();
+                    }}
+                    size={20}
+                    className="text-border cursor-pointer"
+                  />
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
       <SlidePanel
