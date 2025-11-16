@@ -20,6 +20,27 @@ export default function Create({
 
   const mutation = useCreateFavoriteMutation();
 
+  const onCreateFavorite = () => {
+    if (name !== "") {
+      mutation.mutate(
+        { name: name, memo: memo },
+        {
+          onError: (error) => {
+            if (axios.isAxiosError(error) && error.response?.status === 400) {
+              toast.error("이미 등록된 기업입니다.");
+            } else {
+              toast.error("관심기업 등록에 실패했습니다.");
+            }
+          },
+          onSuccess: () => {
+            onClose();
+            toast.success("관심기업이 등록되었습니다.");
+          },
+        }
+      );
+    }
+  };
+
   return (
     <div>
       <div className="flex flex-col gap-2">
@@ -37,29 +58,7 @@ export default function Create({
         <Button
           variant="fill"
           disabled={name === ""}
-          onClick={() => {
-            if (name !== "") {
-              mutation.mutate(
-                { name: name, memo: memo },
-                {
-                  onError: (error) => {
-                    if (
-                      axios.isAxiosError(error) &&
-                      error.response?.status === 400
-                    ) {
-                      toast.error("이미 등록된 기업입니다.");
-                    } else {
-                      toast.error("관심기업 등록에 실패했습니다.");
-                    }
-                  },
-                  onSuccess: () => {
-                    onClose();
-                    toast.success("관심기업이 등록되었습니다.");
-                  },
-                }
-              );
-            }
-          }}
+          onClick={onCreateFavorite}
         >
           저장
         </Button>

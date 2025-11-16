@@ -2,6 +2,7 @@ import { useCheckedList } from "@/store/useCheckedList";
 import { CircleX } from "lucide-react";
 import Button from "@/components/atoms/Button";
 import { useDeleteFavoriteMutation } from "@/api/query";
+import { toast } from "react-hot-toast";
 
 export default function Delete({ onClose }: { onClose: () => void }) {
   const checkedList = useCheckedList((state) => state.checkedList);
@@ -21,6 +22,7 @@ export default function Delete({ onClose }: { onClose: () => void }) {
       mutation.mutate(checkedList);
       resetCheckedList();
     }
+    toast.success("삭제되었습니다.");
     onClose();
   };
 
