@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useCheckedList } from "@/store/useCheckedList";
 import { Item } from "@/api/types";
 
@@ -11,7 +10,8 @@ import SlidePanel from "@/components/atoms/SlidePanel";
 import Detail from "./Detail";
 import { useFavoritesQuery } from "@/api/query";
 import Pagination from "@/components/molecules/Pagination";
-import { useSlidePanel } from "@/hooks/useSlidePanel";
+import useSlidePanel from "@/hooks/useSlidePanel";
+import usePagination from "@/hooks/usePagination";
 
 export default function TableContent({
   onOpenDelete,
@@ -19,13 +19,7 @@ export default function TableContent({
   onOpenDelete: () => void;
 }) {
   const { slidePanelOpen, onOpenCloseItem } = useSlidePanel();
-
-  const [page, setPage] = useState(1);
-
-  const onChangePage = (newPage: number) => {
-    setPage(newPage);
-    resetCheckedList();
-  };
+  const { page, onChangePage } = usePagination();
 
   const { data: favorites } = useFavoritesQuery(page);
   const items = favorites?.items;
@@ -35,7 +29,6 @@ export default function TableContent({
     isMasterChecked,
     toggleCheck,
     onClickMaster,
-    resetCheckedList,
     setSingleDeleteId,
   } = useCheckedList();
 

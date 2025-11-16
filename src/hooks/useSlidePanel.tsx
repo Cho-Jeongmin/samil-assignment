@@ -3,7 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-export const useSlidePanel = () => {
+export default function useSlidePanel() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -24,4 +24,4 @@ export const useSlidePanel = () => {
   };
 
   return { slidePanelOpen, onOpenCloseItem };
-};
+}
