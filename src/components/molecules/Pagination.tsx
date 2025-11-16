@@ -6,7 +6,11 @@ interface PaginationProps {
   onChange: (page: number) => void;
 }
 
-export function Pagination({ page, totalPages, onChange }: PaginationProps) {
+export default function Pagination({
+  page,
+  totalPages,
+  onChange,
+}: PaginationProps) {
   // Todo: 페이지 10개씩만 보여주는 로직 추가
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 

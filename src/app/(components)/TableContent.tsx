@@ -1,7 +1,5 @@
 "use client";
 
-import { usePathname, useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useCheckedList } from "@/store/useCheckedList";
 import { Item } from "@/api/types";
@@ -12,16 +10,15 @@ import { Trash } from "lucide-react";
 import SlidePanel from "@/components/atoms/SlidePanel";
 import Detail from "./Detail";
 import { useFavoritesQuery } from "@/api/query";
-import { Pagination } from "@/components/molecules/Pagination";
+import Pagination from "@/components/molecules/Pagination";
+import { useSlidePanel } from "@/hooks/useSlidePanel";
 
 export default function TableContent({
   onOpenDelete,
 }: {
   onOpenDelete: () => void;
 }) {
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const { replace } = useRouter();
+  const { slidePanelOpen, onOpenCloseItem } = useSlidePanel();
 
   const [page, setPage] = useState(1);
 
@@ -41,21 +38,6 @@ export default function TableContent({
     resetCheckedList,
     setSingleDeleteId,
   } = useCheckedList();
-
-  const [slidePanelOpen, setSlidePanelOpen] = useState(
-    searchParams.get("company-id") ? true : false
-  );
-
-  const onOpenCloseItem = (id: number | undefined) => {
-    const params = new URLSearchParams(searchParams);
-    if (id) {
-      params.set("company-id", id.toString());
-    } else {
-      params.delete("company-id");
-    }
-    replace(`${pathname}?${params.toString()}`);
-    setSlidePanelOpen((prev) => !prev);
-  };
 
   return (
     <div>
