@@ -47,7 +47,7 @@ export async function getFavoriteDetail(id: number): Promise<FavoriteDetail> {
     return res.data;
   } catch (error) {
     console.error("Database Error:", error);
-    throw new Error("Failed to fetch favorites data.");
+    throw new Error("Failed to fetch favorite detail data.");
   }
 }
 
@@ -61,5 +61,16 @@ export async function updateFavoriteMemo(id: number, memo: string) {
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to post favorite company.");
+  }
+}
+
+// 관심기업 삭제
+export async function deleteFavorite(id: number) {
+  try {
+    const res = await axiosInstance.delete(`/favorites/${id}?email=${EMAIL}`);
+    return res.data;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to delete favorite company.");
   }
 }

@@ -1,9 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useCheckedList } from "@/store/useCheckedList";
+
 import Modal from "@/components/atoms/Modal";
 import Create from "./Create";
 import Button from "@/components/atoms/Button";
+import Delete from "./Delete";
 import { Plus, Trash } from "lucide-react";
 
 export interface TableHeaderProps {
@@ -17,7 +20,9 @@ export default function TableHeader({
   subtitle,
   companies,
 }: TableHeaderProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const checkedList = useCheckedList((state) => state.checkedList);
 
   return (
     <header>
@@ -31,25 +36,46 @@ export default function TableHeader({
             variant="fill"
             icon={<Plus size={20} />}
             onClick={() => {
-              setIsOpen(true);
+              setIsCreateOpen(true);
             }}
           >
             관심기업 생성
           </Button>
-          <Button icon={<Trash size={20} />}>관심기업 삭제</Button>
+          <Button
+            disabled={checkedList.length === 0}
+            icon={<Trash size={20} />}
+            onClick={() => setIsDeleteOpen(true)}
+          >
+            관심기업 삭제
+          </Button>
         </div>
       </div>
+      {/* 관심기업 생성 모달 */}
       <Modal
-        isOpen={isOpen}
+        isOpen={isCreateOpen}
         onClose={() => {
-          setIsOpen(false);
+          setIsCreateOpen(false);
         }}
         title="관심기업 생성"
       >
         <Create
           companies={companies}
-          onSuccess={() => {
-            setIsOpen(false);
+          onClose={() => {
+            setIsCreateOpen(false);
+          }}
+        />
+      </Modal>
+      {/* 관심기업 삭제 모달 */}
+      <Modal
+        isOpen={isDeleteOpen}
+        onClose={() => {
+          setIsDeleteOpen(false);
+        }}
+        width="400px"
+      >
+        <Delete
+          onClose={() => {
+            setIsDeleteOpen(false);
           }}
         />
       </Modal>

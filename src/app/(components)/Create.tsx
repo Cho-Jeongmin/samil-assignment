@@ -9,10 +9,10 @@ import { useQueryClient, useMutation } from "@tanstack/react-query";
 
 export default function Create({
   companies,
-  onSuccess,
+  onClose,
 }: {
   companies: string[];
-  onSuccess: () => void;
+  onClose: () => void;
 }) {
   const [name, setName] = useState("");
   const [memo, setMemo] = useState("");
@@ -22,7 +22,7 @@ export default function Create({
     mutationFn: () => createFavorite({ company_name: name, memo: memo }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["favorites"] });
-      onSuccess();
+      onClose();
     },
   });
 

@@ -1,8 +1,11 @@
 "use client";
 
+import { usePathname, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getFavorites } from "@/api/api";
+import { useCheckedList } from "@/store/useCheckedList";
 import { Item } from "@/api/types";
 
 import clsx from "clsx";
@@ -10,44 +13,24 @@ import Checkbox from "@/components/atoms/Checkbox";
 import { Trash } from "lucide-react";
 import SlidePanel from "@/components/atoms/SlidePanel";
 import Detail from "./Detail";
-import { usePathname, useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
 
 export default function TableContent() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
 
-  const { data: favorites, isLoading } = useQuery({
+  const { data: favorites } = useQuery({
     queryKey: ["favorites"],
     queryFn: getFavorites,
   });
   const items = favorites?.items;
 
-  const [checkedAll, setCheckedAll] = useState(false);
-  const [checkedList, setCheckedList] = useState<number[]>([]);
+  const { checkedList, isMasterChecked, toggleCheck, onClickMaster } =
+    useCheckedList();
 
   const [slidePanelOpen, setSlidePanelOpen] = useState(
     searchParams.get("company-id") ? true : false
   );
-
-  const onCheck = (id: number) => {
-    setCheckedList((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-    );
-  };
-
-  const onCheckAll = () => {
-    if (items) {
-      if (checkedList.length === items.length) {
-        setCheckedList([]);
-        setCheckedAll(false);
-      } else {
-        setCheckedList(items.map((item) => item.id));
-        setCheckedAll(true);
-      }
-    }
-  };
 
   const onOpenCloseItem = (id: number | undefined) => {
     const params = new URLSearchParams(searchParams);
@@ -73,8 +56,8 @@ export default function TableContent() {
           <tr className="h-12 bg-gray-100">
             <th>
               <Checkbox
-                onClick={onCheckAll}
-                checked={checkedAll}
+                onClick={() => onClickMaster(items?.map((item) => item.id))}
+                checked={isMasterChecked}
                 className="ml-5"
               />
             </th>
@@ -86,9 +69,6 @@ export default function TableContent() {
         <tbody>
           {items?.map((item: Item) => (
             <tr
-              onClick={() => {
-                onOpenCloseItem(item.id);
-              }}
               className={clsx(
                 "border-t border-t-gray-300 h-12",
                 checkedList.includes(item.id)
@@ -101,15 +81,35 @@ export default function TableContent() {
                 <Checkbox
                   checked={checkedList.includes(item.id)}
                   onChange={() => {
-                    onCheck(item.id);
+                    toggleCheck(item.id, items.length);
                   }}
                   className="ml-5"
                 />
               </td>
-              <td className="cursor-pointer">{item.company_name}</td>
-              <td className="cursor-pointer">{item.created_at}</td>
+              <td
+                onClick={() => {
+                  onOpenCloseItem(item.id);
+                }}
+                className="cursor-pointer"
+              >
+                {item.company_name}
+              </td>
+              <td
+                onClick={() => {
+                  onOpenCloseItem(item.id);
+                }}
+                className="cursor-pointer"
+              >
+                {item.created_at}
+              </td>
               <td className="">
-                <Trash size={20} className="text-border cursor-pointer" />
+                <Trash
+                  onClick={() => {
+                    // Todo: 삭제모달 띄우기
+                  }}
+                  size={20}
+                  className="text-border cursor-pointer"
+                />
               </td>
             </tr>
           ))}
