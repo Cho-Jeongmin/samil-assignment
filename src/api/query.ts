@@ -6,6 +6,8 @@ import {
   getFavorites,
   updateFavoriteMemo,
 } from "./api";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 // 관심기업 목록 조회 쿼리
 export const useFavoritesQuery = (page: number) =>
@@ -31,6 +33,9 @@ export const useCreateFavoriteMutation = () => {
       createFavorite({ company_name: name, memo: memo }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["favorites"] });
+    },
+    onError: (error) => {
+      console.log("관심기업 생성 시 에러 발생", error);
     },
   });
 };

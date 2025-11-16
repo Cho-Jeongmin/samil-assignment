@@ -1,3 +1,4 @@
+import axios from "axios";
 import { axiosInstance } from "./axiosInstance";
 import { Favorites, Favorite, FavoriteDetail } from "./types";
 
@@ -30,16 +31,11 @@ export async function getFavorites(page: number): Promise<Favorites> {
 
 // 관심기업 등록
 export async function createFavorite(favorite: Favorite) {
-  try {
-    const res = await axiosInstance.post(`/favorites`, {
-      email: EMAIL,
-      ...favorite,
-    });
-    return res.data;
-  } catch (error) {
-    console.error("Database Error:", error);
-    throw new Error("Failed to post favorite company.");
-  }
+  const res = await axiosInstance.post(`/favorites`, {
+    email: EMAIL,
+    ...favorite,
+  });
+  return res.data;
 }
 
 // 관심기업 상세 조회

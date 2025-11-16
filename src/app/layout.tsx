@@ -36,7 +36,7 @@ export default function RootLayout({
           </div>
           <div className="pt-15">{children}</div>
         </Provider>
-        <Toaster position="top-right" />
+        <Toaster position="top-right" toastOptions={{ duration: 2000 }} />
       </body>
     </html>
   );

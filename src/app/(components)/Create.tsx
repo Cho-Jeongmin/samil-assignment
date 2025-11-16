@@ -5,6 +5,8 @@ import SearchableSelect from "@/components/atoms/SearchableSelect";
 import Textarea from "@/components/atoms/Textarea";
 import { useState } from "react";
 import { useCreateFavoriteMutation } from "@/api/query";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 export default function Create({
   companies,
@@ -37,8 +39,25 @@ export default function Create({
           disabled={name === ""}
           onClick={() => {
             if (name !== "") {
-              mutation.mutate({ name: name, memo: memo });
-              onClose();
+              mutation.mutate(
+                { name: name, memo: memo },
+                {
+                  onError: (error) => {
+                    if (
+                      axios.isAxiosError(error) &&
+                      error.response?.status === 400
+                    ) {
+                      toast.error("이미 등록된 기업입니다.");
+                    } else {
+                      toast.error("관심기업 등록에 실패했습니다.");
+                    }
+                  },
+                  onSuccess: () => {
+                    onClose();
+                    toast.success("관심기업이 등록되었습니다.");
+                  },
+                }
+              );
             }
           }}
         >
