@@ -9,48 +9,24 @@ import {
   useFavoriteDetailQuery,
   useUpdateFavoriteMemoMutation,
 } from "@/api/query";
+import useTextareaFocus from "@/hooks/useTextareaFocus";
+import useMemoEdit from "@/hooks/useMemoEdit";
 
 export default function Detail() {
   const searchParams = useSearchParams();
   const id = Number(searchParams.get("company-id")) || -1;
-
   const { data: favoriteDetail } = useFavoriteDetailQuery(id);
 
   const mutation = useUpdateFavoriteMemoMutation();
 
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [memo, setMemo] = useState("");
-  const [isEdit, setIsEdit] = useState(false);
-
-  console.log(memo);
-
-  // memo 초기값 설정
-  useEffect(() => {
-    if (favoriteDetail) {
-      setMemo(favoriteDetail?.memo);
+  const { memo, setMemo, isEdit, setIsEdit, onCancel, onSave } = useMemoEdit(
+    favoriteDetail,
+    (memo: string) => {
+      mutation.mutate({ id: id, memo: memo });
     }
-  }, [favoriteDetail]);
+  );
 
-  // 수정하기 버튼 클릭시 textarea에 포커스
-  useLayoutEffect(() => {
-    if (isEdit) {
-      if (textareaRef.current) {
-        textareaRef.current?.focus();
-      }
-    }
-  }, [isEdit]);
-
-  const onCancel = () => {
-    setIsEdit(false);
-    if (favoriteDetail) {
-      setMemo(favoriteDetail?.memo);
-    }
-  };
-
-  const onSave = () => {
-    mutation.mutate({ id: id, memo: memo });
-    setIsEdit(false);
-  };
+  const { textareaRef } = useTextareaFocus(isEdit);
 
   return (
     <div className="flex flex-col h-full">
