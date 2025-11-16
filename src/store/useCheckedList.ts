@@ -5,9 +5,11 @@ import { immer } from "zustand/middleware/immer";
 interface CheckedListState {
   checkedList: number[];
   isMasterChecked: boolean;
+  singleDeleteId: number;
   toggleCheck: (id: number, allListLength: number) => void;
   onClickMaster: (newList: number[] | undefined) => void;
   resetCheckedList: () => void;
+  setSingleDeleteId: (id: number) => void;
 }
 
 export const useCheckedList = create<CheckedListState>()(
@@ -18,6 +20,9 @@ export const useCheckedList = create<CheckedListState>()(
 
       // 전체 체크 여부
       isMasterChecked: false,
+
+      // 단일 삭제할 id
+      singleDeleteId: -1,
 
       // 한개 체크 또는 해제
       toggleCheck: (id, allListLength) =>
@@ -49,10 +54,16 @@ export const useCheckedList = create<CheckedListState>()(
             }
           }
         }),
+      // 전체 해제
       resetCheckedList: () =>
         set((state) => {
+          // Todo: onClickMaster 액션의 전체해제 로직과 중복됨. 중복제거 필요
           state.checkedList = [];
           state.isMasterChecked = false;
+        }),
+      setSingleDeleteId: (id: number) =>
+        set((state) => {
+          state.singleDeleteId = id;
         }),
     })),
     { name: "CheckedListStore" }

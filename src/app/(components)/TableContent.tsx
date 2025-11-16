@@ -14,7 +14,11 @@ import { Trash } from "lucide-react";
 import SlidePanel from "@/components/atoms/SlidePanel";
 import Detail from "./Detail";
 
-export default function TableContent() {
+export default function TableContent({
+  onOpenDelete,
+}: {
+  onOpenDelete: () => void;
+}) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -25,8 +29,13 @@ export default function TableContent() {
   });
   const items = favorites?.items;
 
-  const { checkedList, isMasterChecked, toggleCheck, onClickMaster } =
-    useCheckedList();
+  const {
+    checkedList,
+    isMasterChecked,
+    toggleCheck,
+    onClickMaster,
+    setSingleDeleteId,
+  } = useCheckedList();
 
   const [slidePanelOpen, setSlidePanelOpen] = useState(
     searchParams.get("company-id") ? true : false
@@ -105,7 +114,8 @@ export default function TableContent() {
               <td className="">
                 <Trash
                   onClick={() => {
-                    // Todo: 삭제모달 띄우기
+                    setSingleDeleteId(item.id);
+                    onOpenDelete();
                   }}
                   size={20}
                   className="text-border cursor-pointer"

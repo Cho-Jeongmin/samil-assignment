@@ -6,22 +6,22 @@ import { useCheckedList } from "@/store/useCheckedList";
 import Modal from "@/components/atoms/Modal";
 import Create from "./Create";
 import Button from "@/components/atoms/Button";
-import Delete from "./Delete";
 import { Plus, Trash } from "lucide-react";
 
 export interface TableHeaderProps {
   title: string;
   subtitle: string;
   companies: string[];
+  onOpenDelete: () => void;
 }
 
 export default function TableHeader({
   title,
   subtitle,
   companies,
+  onOpenDelete,
 }: TableHeaderProps) {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
-  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const checkedList = useCheckedList((state) => state.checkedList);
 
   return (
@@ -44,7 +44,7 @@ export default function TableHeader({
           <Button
             disabled={checkedList.length === 0}
             icon={<Trash size={20} />}
-            onClick={() => setIsDeleteOpen(true)}
+            onClick={onOpenDelete}
           >
             관심기업 삭제
           </Button>
@@ -62,20 +62,6 @@ export default function TableHeader({
           companies={companies}
           onClose={() => {
             setIsCreateOpen(false);
-          }}
-        />
-      </Modal>
-      {/* 관심기업 삭제 모달 */}
-      <Modal
-        isOpen={isDeleteOpen}
-        onClose={() => {
-          setIsDeleteOpen(false);
-        }}
-        width="400px"
-      >
-        <Delete
-          onClose={() => {
-            setIsDeleteOpen(false);
           }}
         />
       </Modal>
