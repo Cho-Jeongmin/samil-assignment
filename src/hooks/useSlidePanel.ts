@@ -19,6 +19,7 @@ export default function useSlidePanel() {
       params.set("company-id", id.toString());
     } else {
       params.delete("company-id");
+      // Todo: 메모 수정 중 패널 닫을 시 alert 띄우기
     }
     replace(`${pathname}?${params.toString()}`);
     setSlidePanelOpen((prev) => !prev);
