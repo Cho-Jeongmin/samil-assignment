@@ -5,8 +5,14 @@ import clsx from "clsx";
 import { ChevronDown } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
 
+function isStringArray(arr: SelectOptions): arr is string[] {
+  return typeof arr[0] === "string";
+}
+
+export type SelectOptions = string[] | { label: string; value: string }[];
+
 interface SearchableSelectProps {
-  options: string[];
+  options: SelectOptions;
   value: string | null;
   setValue: (option: string) => void;
   placeholder?: string;
@@ -16,7 +22,7 @@ interface SearchableSelectProps {
 }
 
 const SearchableSelect: React.FC<SearchableSelectProps> = ({
-  options,
+  options: rawOptions,
   value,
   setValue,
   placeholder = "검색어를 입력하세요",
@@ -31,6 +37,10 @@ const SearchableSelect: React.FC<SearchableSelectProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const selectedOptionRef = useRef<HTMLLIElement | null>(null);
 
+  const options = isStringArray(rawOptions)
+    ? rawOptions.map((opt: string) => ({ label: opt, value: opt }))
+    : rawOptions;
+
   // input에 자동 포커스
   useEffect(() => {
     if (!disabled) inputRef.current?.focus();
@@ -40,7 +50,7 @@ const SearchableSelect: React.FC<SearchableSelectProps> = ({
   const filteredOptions = isSelected
     ? options
     : options.filter((opt) =>
-        opt.toLowerCase().includes(keyword.toLowerCase())
+        opt.label.toLowerCase().includes(keyword.toLowerCase())
       );
 
   // 드랍다운 오픈 시, 선택된 옵션으로 자동 스크롤
@@ -111,24 +121,24 @@ const SearchableSelect: React.FC<SearchableSelectProps> = ({
         <div className="absolute mt-1 w-full p-2 bg-white rounded-md shadow-2xl z-10 max-h-60 overflow-auto">
           <ul>
             {filteredOptions.length > 0 ? (
-              filteredOptions.map((opt: string) => (
+              filteredOptions.map((opt) => (
                 <li
                   key={uuidv4()}
-                  ref={value === opt ? selectedOptionRef : null}
+                  ref={value === opt.value ? selectedOptionRef : null}
                   onClick={() => {
-                    setValue?.(opt);
-                    setKeyword(opt);
+                    setValue?.(opt.value);
+                    setKeyword(opt.label);
                     setOpen(false);
                     setIsSelected(true);
                   }}
                   className={clsx(
                     "p-2 rounded-xs cursor-pointer",
-                    value === opt
+                    value === opt.value
                       ? "bg-primary-300 rounded-sm!"
                       : "hover:bg-gray-100"
                   )}
                 >
-                  {opt}
+                  {opt.label}
                 </li>
               ))
             ) : (
