@@ -12,6 +12,7 @@ import { useFavoritesQuery } from "@/api/query";
 import Pagination from "@/components/molecules/Pagination";
 import useSlidePanel from "@/hooks/useSlidePanel";
 import usePagination from "@/hooks/usePagination";
+import { formatDate } from "@/utiils/formatDate";
 
 export default function TableContent({
   onOpenDelete,
@@ -103,7 +104,7 @@ export default function TableContent({
                     }}
                     className="cursor-pointer"
                   >
-                    {item.created_at}
+                    {formatDate(item.created_at)}
                   </td>
                   <td className="">
                     <Trash
