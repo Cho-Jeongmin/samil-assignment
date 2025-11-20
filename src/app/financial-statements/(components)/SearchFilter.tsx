@@ -33,6 +33,7 @@ export default function SearchFilter({ companies }: SearchFilterProps) {
             <SearchableSelect
               options={["2021", "2022", "2023", "2024", "2025"]}
               placeholder="사업연도를 선택해주세요"
+              searchDisabled={true}
             />
           </div>
         </div>
@@ -49,6 +50,7 @@ export default function SearchFilter({ companies }: SearchFilterProps) {
                 "사업보고서",
               ]}
               placeholder="보고서명을 선택해주세요"
+              searchDisabled={true}
             />
           </div>
         </div>
@@ -60,6 +62,7 @@ export default function SearchFilter({ companies }: SearchFilterProps) {
             <SearchableSelect
               options={["재무제표", "연결재무제표"]}
               placeholder="재무제표 유형을 선택해주세요"
+              searchDisabled={true}
             />
           </div>
         </div>

@@ -12,6 +12,7 @@ interface SearchableSelectProps {
   placeholder?: string;
   className?: string;
   disabled?: boolean;
+  searchDisabled?: boolean;
 }
 
 const SearchableSelect: React.FC<SearchableSelectProps> = ({
@@ -21,6 +22,7 @@ const SearchableSelect: React.FC<SearchableSelectProps> = ({
   placeholder = "검색어를 입력하세요",
   className,
   disabled = false,
+  searchDisabled = false,
 }) => {
   const [open, setOpen] = useState(false);
   const [keyword, setKeyword] = useState("");
@@ -73,7 +75,6 @@ const SearchableSelect: React.FC<SearchableSelectProps> = ({
           open && "border-main",
           disabled && "bg-gray-100 cursor-not-allowed"
         )}
-        onClick={() => !disabled && setOpen(!open)}
       >
         <input
           ref={inputRef}
@@ -87,12 +88,16 @@ const SearchableSelect: React.FC<SearchableSelectProps> = ({
           }}
           placeholder={placeholder}
           disabled={disabled}
+          readOnly={searchDisabled}
+          onClick={() => !disabled && setOpen((prev) => !prev)}
           className={clsx(
             "w-full focus:outline-none",
-            disabled && "cursor-not-allowed"
+            disabled && "cursor-not-allowed",
+            searchDisabled && "cursor-pointer"
           )}
         />
         <ChevronDown
+          onClick={() => !disabled && setOpen((prev) => !prev)}
           size={24}
           className={clsx(
             "hover:cursor-pointer",
