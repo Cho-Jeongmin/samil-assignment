@@ -1,6 +1,6 @@
 import { fetchCompaniesServer } from "@/api/api";
 import Banner from "@/components/molecules/Banner";
-import SearchHeader from "./(components)/SearchFilter";
+import SearchHeader from "./(components)/Search";
 import Viewer from "./(components)/Viewer";
 import Title from "@/components/atoms/Title";
 
