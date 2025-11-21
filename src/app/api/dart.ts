@@ -1,7 +1,4 @@
-export async function dartFetch(
-  path: string,
-  params: Record<string, string> = {}
-) {
+export async function dartFetch(path: string, params?: URLSearchParams) {
   const API_BASE = process.env.NEXT_PUBLIC_OPEN_DART_BASE;
   const API_KEY = process.env.NEXT_PUBLIC_OPEN_DART_KEY;
 
@@ -15,9 +12,15 @@ export async function dartFetch(
 
   const url = new URL(path, API_BASE);
 
-  Object.entries({ ...params, crtfc_key: API_KEY }).forEach(([k, v]) =>
-    url.searchParams.set(k, v)
-  );
+  if (params) {
+    params.forEach((value, key) => {
+      url.searchParams.set(key, value);
+    });
+  }
+
+  url.searchParams.set("crtfc_key", API_KEY);
+
+  console.log(url.toString());
 
   return await fetch(url.toString());
 }

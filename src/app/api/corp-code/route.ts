@@ -46,7 +46,10 @@ export async function GET(request: Request) {
       // 기업명 검색
       for (const item of list) {
         if (item.corp_name.includes(corpName)) {
-          corpCode = item.corp_code;
+          corpCode =
+            typeof item.corp_code === "string"
+              ? item.corp_code
+              : item.corp_code[0];
           break;
         }
       }
@@ -55,7 +58,7 @@ export async function GET(request: Request) {
 
     if (!corpCode) {
       return NextResponse.json(
-        { error: `${corpName}의 corp_code를 찾지 못했습니다.` },
+        { error: `${corpName}의 corpCode를 찾지 못했습니다.` },
         { status: 404 }
       );
     }

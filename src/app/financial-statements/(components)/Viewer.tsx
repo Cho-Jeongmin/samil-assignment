@@ -7,9 +7,11 @@ export default function Viewer() {
   useEffect(() => {
     const getCorpCode = async () => {
       const res = await fetch(
-        `/api/corp-code?corpName=${encodeURIComponent("삼일회계법인")}`
+        `/api/corp-code?corpName=${encodeURIComponent("삼성전자")}`
       );
-      console.log(res);
+      const res2 = await fetch(
+        `/api/statements?corp_code=00126380&bsns_year=2024&reprt_code=11011&fs_div=OFS`
+      );
     };
     getCorpCode();
   }, []);
