@@ -122,6 +122,7 @@ export default function TableContent({
         <Pagination
           page={page}
           totalPages={favorites?.total_pages || 1}
+          itemCount={items?.length}
           onChange={onChangePage}
         />
       </div>
