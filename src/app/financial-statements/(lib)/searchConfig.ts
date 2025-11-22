@@ -46,8 +46,10 @@ export const searchConfig: {
     label: "재무제표",
     placeholder: "재무제표 유형을 선택해주세요",
     options: [
-      { label: "재무제표", value: "OFS" },
-      { label: "연결재무제표", value: "CFS" },
+      // { label: "재무제표", value: "OFS" },
+      // { label: "연결재무제표", value: "CFS" },
+      { label: "재무제표", value: "5" },
+      { label: "연결재무제표", value: "0" },
     ],
     searchDisabled: true,
   },
