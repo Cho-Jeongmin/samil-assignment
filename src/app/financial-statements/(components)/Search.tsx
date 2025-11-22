@@ -12,10 +12,6 @@ interface SearchProps {
   companies: string[];
 }
 
-const rowClass = "flex items-center gap-2";
-const labelClass = "w-21 flex gap-1";
-const spanClass = "text-main font-semibold";
-
 export default function Search({ companies }: SearchProps) {
   const [search, setSearch] = useState<{ [key: string]: string }>({});
   const corpCodeListRef = useRef<Promise<CorpCodeObject[]> | null>(null);
@@ -90,9 +86,9 @@ export default function Search({ companies }: SearchProps) {
     <div className="flex flex-col items-center gap-6">
       <div className="flex flex-col gap-4 justify-between w-full">
         {searchConfig.map((row) => (
-          <div className={rowClass} key={row.id}>
-            <label className={labelClass}>
-              <span className={spanClass}>*</span>
+          <div className="flex items-center gap-2" key={row.id}>
+            <label className="w-21 flex gap-1">
+              <span className="text-main font-semibold">*</span>
               {row.label}
             </label>
             <div className="flex-1">
