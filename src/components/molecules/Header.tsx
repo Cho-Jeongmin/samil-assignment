@@ -30,7 +30,13 @@ export default function Header() {
           >
             일반과제
           </Link>
-          <Link href="/financial-statements" className="nav-item">
+          <Link
+            href="/financial-statements"
+            className={clsx(
+              "nav-item",
+              pathname === "/financial-statements" && "text-black!"
+            )}
+          >
             산업 전문화 과제
           </Link>
         </div>
