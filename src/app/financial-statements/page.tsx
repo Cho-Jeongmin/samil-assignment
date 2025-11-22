@@ -1,7 +1,6 @@
 import { fetchCompaniesServer } from "@/api/api";
 import Banner from "@/components/molecules/Banner";
 import Search from "./(components)/Search";
-import Viewer from "./(components)/Viewer";
 import Title from "@/components/atoms/Title";
 
 export default async function FinancialStatmentsPage() {
@@ -19,7 +18,6 @@ export default async function FinancialStatmentsPage() {
           subtitle="기업명과 보고서 옵션을 선택하여 제무제표를 조회해보세요."
         />
         <Search companies={companies} />
-        <Viewer />
       </main>
     </div>
   );

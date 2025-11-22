@@ -6,6 +6,7 @@ import { FileScan } from "lucide-react";
 import { searchConfig } from "../(lib)/searchConfig";
 import { useState, useRef, useEffect } from "react";
 import { CorpCodeObject } from "@/app/api/corpCodeList/route";
+import Viewer from "./Viewer";
 
 interface SearchProps {
   companies: string[];
@@ -116,17 +117,7 @@ export default function Search({ companies }: SearchProps) {
       >
         검색
       </Button>
-      {iframe && (
-        <div
-          className="w-full h-screen"
-          ref={(el) => {
-            if (el && iframe) {
-              el.innerHTML = "";
-              el.appendChild(iframe);
-            }
-          }}
-        />
-      )}
+      <Viewer iframe={iframe} />
     </div>
   );
 }
