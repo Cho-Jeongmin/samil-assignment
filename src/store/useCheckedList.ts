@@ -6,7 +6,11 @@ interface CheckedListState {
   checkedList: number[];
   isMasterChecked: boolean;
   singleDeleteId: number;
-  toggleCheck: (id: number, allListLength: number) => void;
+  toggleCheck: (
+    id: number,
+    allListLength: number,
+    deleteOnly?: boolean
+  ) => void;
   onClickMaster: (newList: number[] | undefined) => void;
   resetCheckedList: () => void;
   setSingleDeleteId: (id: number) => void;
@@ -25,16 +29,18 @@ export const useCheckedList = create<CheckedListState>()(
       singleDeleteId: -1,
 
       // 한개 체크 또는 해제
-      toggleCheck: (id, allListLength) =>
+      toggleCheck: (id, allListLength, deleteOnly) =>
         set((state) => {
           const index = state.checkedList.indexOf(id);
           if (index >= 0) {
             state.checkedList.splice(index, 1); // 이미 존재하면 삭제
             state.isMasterChecked = false; // 마스터 해제
           } else {
-            state.checkedList.push(id); // 존재하지 않으면 추가
-            if (state.checkedList.length === allListLength) {
-              state.isMasterChecked = true; // 마스터 체크
+            if (!deleteOnly) {
+              state.checkedList.push(id); // 존재하지 않으면 추가
+              if (state.checkedList.length === allListLength) {
+                state.isMasterChecked = true; // 마스터 체크
+              }
             }
           }
         }),
@@ -54,6 +60,7 @@ export const useCheckedList = create<CheckedListState>()(
             }
           }
         }),
+
       // 전체 해제
       resetCheckedList: () =>
         set((state) => {
@@ -61,6 +68,8 @@ export const useCheckedList = create<CheckedListState>()(
           state.checkedList = [];
           state.isMasterChecked = false;
         }),
+
+      // 단일 삭제할 id 설정
       setSingleDeleteId: (id: number) =>
         set((state) => {
           state.singleDeleteId = id;
