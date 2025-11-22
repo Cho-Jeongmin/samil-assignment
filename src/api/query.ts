@@ -51,21 +51,13 @@ export const useUpdateFavoriteMemoMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({
-      id,
-      memo,
-      onSuccess,
-    }: {
-      id: number;
-      memo: string;
-      onSuccess: () => void;
-    }) => updateFavoriteMemo(id, memo),
+    mutationFn: ({ id, memo }: { id: number; memo: string }) =>
+      updateFavoriteMemo(id, memo),
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({
         queryKey: ["favorite-detail", variables.id],
       });
       toast.success("메모가 수정되었습니다.");
-      variables.onSuccess();
     },
     onError: (error) => {
       console.log("관심기업 메모 수정 시 에러 발생", error);
