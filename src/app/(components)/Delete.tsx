@@ -15,15 +15,22 @@ export default function Delete({ onClose }: { onClose: () => void }) {
   const onDelete = () => {
     if (singleDeleteId >= 0) {
       // 단일 삭제
-      mutation.mutate([singleDeleteId]);
-      toggleCheck(singleDeleteId, -1, true);
-      setSingleDeleteId(-1);
+      mutation.mutate([singleDeleteId], {
+        onSuccess: () => {
+          toggleCheck(singleDeleteId, -1, true);
+          setSingleDeleteId(-1);
+          onClose();
+        },
+      });
     } else {
       // 일괄 삭제
-      mutation.mutate(checkedList);
-      resetCheckedList();
+      mutation.mutate(checkedList, {
+        onSuccess: () => {
+          resetCheckedList();
+          onClose();
+        },
+      });
     }
-    onClose();
   };
 
   return (
