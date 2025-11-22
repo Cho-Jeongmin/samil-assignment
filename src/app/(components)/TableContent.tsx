@@ -25,8 +25,6 @@ export default function TableContent({
   const { data: favorites, isLoading, isError } = useFavoritesQuery(page);
   const items = favorites?.items;
 
-  console.log(isError);
-
   const {
     checkedList,
     isMasterChecked,
