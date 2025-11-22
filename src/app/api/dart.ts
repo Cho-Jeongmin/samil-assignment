@@ -20,7 +20,7 @@ export async function dartFetch(path: string, params?: URLSearchParams) {
 
   url.searchParams.set("crtfc_key", API_KEY);
 
-  console.log(url.toString());
+  console.log("DART API 요청", url.toString());
 
   return await fetch(url.toString());
 }

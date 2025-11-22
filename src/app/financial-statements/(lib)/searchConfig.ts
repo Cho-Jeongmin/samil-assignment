@@ -12,7 +12,7 @@ export const searchConfig: {
   {
     id: 1,
     required: true,
-    name: "corp_code",
+    name: "corp_name",
     label: "기업명",
     placeholder: "기업명을 입력해주세요",
   },
