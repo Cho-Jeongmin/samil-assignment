@@ -4,10 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { Pencil } from "lucide-react";
 import Button from "@/components/atoms/Button";
 import Textarea from "@/components/atoms/Textarea";
-import {
-  useFavoriteDetailQuery,
-  useUpdateFavoriteMemoMutation,
-} from "@/api/query";
+import { useFavoriteDetailQuery } from "@/api/query";
 import useTextareaFocus from "@/hooks/useTextareaFocus";
 import useMemoEdit from "@/hooks/useMemoEdit";
 
@@ -20,14 +17,10 @@ export default function Detail() {
     isError,
   } = useFavoriteDetailQuery(id);
 
-  const mutation = useUpdateFavoriteMemoMutation();
-
-  const { memo, setMemo, isEdit, setIsEdit, onCancel, onSave } = useMemoEdit(
+  const { memo, setMemo, isEdit, setIsEdit, onCancel, onSave } = useMemoEdit({
+    id,
     favoriteDetail,
-    (memo: string, onSuccess: () => void) => {
-      mutation.mutate({ id: id, memo: memo, onSuccess: onSuccess });
-    }
-  );
+  });
 
   const { textareaRef } = useTextareaFocus(isEdit);
 

@@ -5,8 +5,6 @@ import SearchableSelect from "@/components/atoms/SearchableSelect";
 import Textarea from "@/components/atoms/Textarea";
 import { useState } from "react";
 import { useCreateFavoriteMutation } from "@/api/query";
-import toast from "react-hot-toast";
-import axios from "axios";
 
 export default function Create({
   companies,

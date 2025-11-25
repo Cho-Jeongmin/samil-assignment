@@ -8,6 +8,10 @@
   @apply flex items-center px-3 py-1 rounded-md text-text cursor-pointer disabled:cursor-default disabled:opacity-30;
 }
 
+.lucide * {
+  vector-effect: non-scaling-stroke;
+}
+
 @theme {
   --color-border: #c6c6c8;
   --color-text: #3e3e3e;
@@ -17,4 +21,5 @@
   --color-primary-100: #fff7e0;
   --color-danger: #9c1613;
   --color-danger-bg: #fac7ce;
+  --color-bg: #c4c4c4;
 }

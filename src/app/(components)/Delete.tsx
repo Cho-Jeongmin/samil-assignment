@@ -6,6 +6,7 @@ import { useDeleteFavoriteMutation } from "@/api/query";
 export default function Delete({ onClose }: { onClose: () => void }) {
   const checkedList = useCheckedList((state) => state.checkedList);
   const singleDeleteId = useCheckedList((state) => state.singleDeleteId);
+  const toggleCheck = useCheckedList((state) => state.toggleCheck);
   const resetCheckedList = useCheckedList((state) => state.resetCheckedList);
   const setSingleDeleteId = useCheckedList((state) => state.setSingleDeleteId);
 
@@ -14,15 +15,22 @@ export default function Delete({ onClose }: { onClose: () => void }) {
   const onDelete = () => {
     if (singleDeleteId >= 0) {
       // 단일 삭제
-      mutation.mutate([singleDeleteId]);
-      // Todo: 만약 singleDeleteId가 checkedList에 담겨있다면 삭제
-      setSingleDeleteId(-1);
+      mutation.mutate([singleDeleteId], {
+        onSuccess: () => {
+          toggleCheck(singleDeleteId, -1, true);
+          setSingleDeleteId(-1);
+          onClose();
+        },
+      });
     } else {
       // 일괄 삭제
-      mutation.mutate(checkedList);
-      resetCheckedList();
+      mutation.mutate(checkedList, {
+        onSuccess: () => {
+          resetCheckedList();
+          onClose();
+        },
+      });
     }
-    onClose();
   };
 
   return (

@@ -37,7 +37,7 @@ export default function SlidePanel({
 
       {/* Slide Panel */}
       <TransitionChild>
-        <div className="fixed inset-y-0 right-0 w-250 bg-white transition duration-300 data-closed:translate-x-full z-20">
+        <div className="fixed inset-y-0 right-0 w-2/3 max-w-250 bg-white transition duration-300 data-closed:translate-x-full z-20">
           {children}
         </div>
       </TransitionChild>

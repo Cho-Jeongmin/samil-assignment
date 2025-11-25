@@ -7,8 +7,9 @@ import Modal from "@/components/atoms/Modal";
 import Create from "./Create";
 import Button from "@/components/atoms/Button";
 import { Plus, Trash } from "lucide-react";
+import Title from "@/components/atoms/Title";
 
-export interface TableHeaderProps {
+interface TableHeaderProps {
   title: string;
   subtitle: string;
   companies: string[];
@@ -27,10 +28,7 @@ export default function TableHeader({
   return (
     <header>
       <div className="flex justify-between items-end">
-        <div>
-          <h1 className="text-[1.75rem] font-semibold mb-1">{title}</h1>
-          <p className="text-sm font-normal text-gray-500">{subtitle}</p>
-        </div>
+        <Title title={title} subtitle={subtitle} />
         <div className="flex gap-4">
           <Button
             variant="fill"
